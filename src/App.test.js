@@ -21,38 +21,22 @@ const setup = () => {
   }
 }
 
-test('3 recipes display beneath My Recipe heading', async () => {
+test('3 recipes display beneath My Recipe heading', () => {
   const {instructionsInput, nameInput, submitButton} = setup();
   const recipeNameArray = ["Lean Pockets", 'Taquitos', 'Mt. Dew Margharita']
   const recipeInstructionsArray = ["place in toaster oven on 350 for 45 minutes",
                                    'Place in Toaster Oven on 420 for 69 minutes',
                                    'Place ice, Mt. Dew(tm) beverage, and crushed Cheeto\'s into mixer and shake vigoursly. Be sure to firmly grasp it.']
 
-  // for (let i = 0; i < recipeNameArray.length - 1; i++) {
-  // await userEvent.type(instructionsInput, recipeInstructionsArray[i])
-  // await userEvent.type(nameInput, recipeNameArray[i])
-  // userEvent.click(submitButton);
-  // }
-
-  await userEvent.type(instructionsInput, recipeInstructionsArray[0])
-  await userEvent.type(nameInput, recipeNameArray[0])
-  await userEvent.click(submitButton);
-  await userEvent.type(instructionsInput, recipeInstructionsArray[1])
-  await userEvent.type(nameInput, recipeNameArray[1])
-  await userEvent.click(submitButton);
-  await userEvent.type(instructionsInput, recipeInstructionsArray[2])
-  await userEvent.type(nameInput, recipeNameArray[2])
-  userEvent.click(submitButton);
-
-  expect(screen.getByRole('listitem')).toBeInTheDocument();
+  for (let i = 0; i < recipeNameArray.length; i++) {
+    userEvent.type(instructionsInput, recipeInstructionsArray[i])
+    userEvent.type(nameInput, recipeNameArray[i])
+    userEvent.click(submitButton);
+  }
 
   let displayedRecipeNames = screen.getAllByRole('listitem')
   for (let i = 0; i < displayedRecipeNames.length; i++) {
-    expect(screen.getByText(recipeNameArray[i])).toContain(displayedRecipeNames[i])
-  //before loop - declare loopTrue = true
-  //if array[i] != otherArray;
-  //loopTrue = false
-  //expect(loopTrue)
+     expect(screen.getByText(recipeNameArray[i])).toBe(displayedRecipeNames[i])
   }
 
 })
